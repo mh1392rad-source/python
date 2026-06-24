@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ورود به مرجع دستورات پایتون</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', 'Segoe UI', Tahoma, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        /* ========== صفحه ورود ========== */
+        .login-container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .login-container .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .login-container h2 {
+            font-size: 26px;
+            color: #1a2b4a;
+            margin-bottom: 6px;
+        }
+
+        .login-container p {
+            color: #6b7a8f;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .login-container label {
+            display: block;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a2b4a;
+            margin-bottom: 6px;
+        }
+
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            direction: ltr;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: border 0.2s;
+            outline: none;
+            background: #f8fafc;
+        }
+
+        .login-container input[type="password"]:focus {
+            border-color: #1a2b4a;
+            background: white;
+        }
+
+        .login-container .error-msg {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 10px;
+            height: 24px;
+            font-weight: 500;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 14px;
+            background: #1a2b4a;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.2s;
+        }
+
+        .login-container button:hover {
+            background: #2d4a7a;
+        }
+
+        .login-container .hint {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #8896a8;
+        }
+
+        /* ========== محتوای اصلی (بعد از ورود) ========== */
+        .main-content {
+            display: none;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 35px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        .main-content h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #1a2b4a;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .main-content .subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #6b7a8f;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e9edf2;
+            padding-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2b4a;
+            background: #e9edf2;
+            padding: 10px 18px;
+            border-radius: 12px;
+            margin: 30px 0 16px 0;
+            display: inline-block;
+        }
+
+        .section-wrapper {
+            overflow-x: auto;
+            margin-bottom: 10px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            min-width: 600px;
+        }
+
+        thead {
+            background: #1a2b4a;
+            color: white;
+        }
+
+        thead th {
+            padding: 14px 18px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        thead th:first-child {
+            width: 70px;
+            text-align: center;
+        }
+
+        thead th:nth-child(2) {
+            width: 38%;
+        }
+
+        thead th:last-child {
+            width: 55%;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #edf2f7;
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        tbody td {
+            padding: 12px 18px;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        tbody td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #1a2b4a;
+            font-size: 14px;
+        }
+
+        .code {
+            background: #f1f4f9;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 14px;
+            color: #c7254e;
+            direction: ltr;
+            display: inline-block;
+            word-break: break-all;
+        }
+
+        .desc {
+            color: #2d3748;
+            font-size: 14.5px;
+        }
+
+        .channel-link {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 22px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .channel-link a {
+            display: inline-block;
+            background: #1a2b4a;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .channel-link a:hover {
+            background: #2d4a7a;
+            transform: scale(1.02);
+        }
+
+        .channel-link .note {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #8896a8;
+        }
+
+        .print-btn {
+            display: inline-block;
+            background: #1a2b4a;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .print-btn:hover {
+            background: #2d4a7a;
+        }
+
+        .logout-btn {
+            background: #e53e3e;
+            margin-right: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #c53030 !important;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 10px;
+            }
+            .login-container {
+                display: none !important;
+            }
+            .main-content {
+                box-shadow: none;
+                padding: 15px;
+                display: block !important;
+            }
+            .print-btn,
+            .logout-btn {
+                display: none !important;
+            }
+            .section-wrapper {
+                border: 1px solid #ccc;
+            }
+            thead {
+                background: #1a2b4a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .code {
+                background: #f1f4f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .main-content {
+                padding: 18px 12px;
+            }
+            .main-content h1 {
+                font-size: 24px;
+            }
+            table {
+                font-size: 13px;
+                min-width: 480px;
+            }
+            thead th,
+            tbody td {
+                padding: 10px 12px;
+            }
+            .code {
+                font-size: 12px;
+                padding: 2px 8px;
+            }
+            .section-title {
+                font-size: 18px;
+            }
+            .channel-link a {
+                font-size: 15px;
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- ========== صفحه ورود ========== -->
+    <!-- ============================================================ -->
+    <div class="login-container" id="loginContainer">
+        <div class="logo">🔐</div>
+        <h2>ورود به مرجع پایتون</h2>
+        <p>برای مشاهده دستورات، رمز عبور را وارد کنید</p>
+
+        <form id="loginForm">
+            <label for="passwordInput">رمز عبور</label>
+            <input type="password" id="passwordInput" placeholder="رمز را وارد کنید..." autofocus />
+            <div class="error-msg" id="errorMsg"></div>
+            <button type="button" id="loginBtn">ورود</button>
+        </form>
+
+        <div class="hint">🔑 رمز به شما داده شده است</div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ========== محتوای اصلی (جدول دستورات) ========== -->
+    <!-- ============================================================ -->
+    <div class="main-content" id="mainContent">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 5px;">
+            <h1 style="margin:0; flex:1; text-align:center;">🐍 خلاصه ۱۰۷ دستور پرکاربرد پایتون</h1>
+        </div>
+        <p class="subtitle">مرجع سریع برای برنامه‌نویسان — قابل چاپ و تبدیل به PDF</p>
+
+        <div style="text-align: left; margin-bottom: 15px;">
+            <button class="print-btn" onclick="window.print()">🖨️ چاپ / PDF</button>
+            <button class="print-btn logout-btn" onclick="logout()">🚪 خروج</button>
+        </div>
+
+        <!-- ===== ۱. متغیرها ===== -->
+        <div class="section-title">۱. متغیرها و نوع داده</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td><span class="code">x = 10</span></td><td class="desc">متغیر عدد صحیح</td></tr>
+                    <tr><td>2</td><td><span class="code">y = 3.14</span></td><td class="desc">متغیر اعشاری</td></tr>
+                    <tr><td>3</td><td><span class="code">name = "Ali"</span></td><td class="desc">رشته (String)</td></tr>
+                    <tr><td>4</td><td><span class="code">flag = True</span></td><td class="desc">بولین (True / False)</td></tr>
+                    <tr><td>5</td><td><span class="code">a, b = 5, 10</span></td><td class="desc">تخصیص چندگانه</td></tr>
+                    <tr><td>6</td><td><span class="code">x = None</span></td><td class="desc">مقدار خالی</td></tr>
+                    <tr><td>7</td><td><span class="code">type(x)</span></td><td class="desc">نمایش نوع متغیر</td></tr>
+                    <tr><td>8</td><td><span class="code">int("5")</span></td><td class="desc">تبدیل به عدد صحیح</td></tr>
+                    <tr><td>9</td><td><span class="code">str(10)</span></td><td class="desc">تبدیل به رشته</td></tr>
+                    <tr><td>10</td><td><span class="code">float("3.14")</span></td><td class="desc">تبدیل به اعشاری</td></tr>
+                    <tr><td>11</td><td><span class="code">bool(0)</span></td><td class="desc">تبدیل به بولین</td></tr>
+                    <tr><td>12</td><td><span class="code">len("hello")</span></td><td class="desc">طول رشته یا لیست</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۲. عملگرها ===== -->
+        <div class="section-title">۲. عملگرها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>13</td><td><span class="code">5 + 3</span></td><td class="desc">جمع</td></tr>
+                    <tr><td>14</td><td><span class="code">5 - 3</span></td><td class="desc">تفریق</td></tr>
+                    <tr><td>15</td><td><span class="code">5 * 3</span></td><td class="desc">ضرب</td></tr>
+                    <tr><td>16</td><td><span class="code">10 / 2</span></td><td class="desc">تقسیم (اعشاری)</td></tr>
+                    <tr><td>17</td><td><span class="code">10 // 3</span></td><td class="desc">تقسیم صحیح</td></tr>
+                    <tr><td>18</td><td><span class="code">10 % 3</span></td><td class="desc">باقیمانده تقسیم</td></tr>
+                    <tr><td>19</td><td><span class="code">2 ** 3</span></td><td class="desc">توان</td></tr>
+                    <tr><td>20</td><td><span class="code">x == y</span></td><td class="desc">بررسی برابری</td></tr>
+                    <tr><td>21</td><td><span class="code">x != y</span></td><td class="desc">نابرابری</td></tr>
+                    <tr><td>22</td><td><span class="code">x > y</span></td><td class="desc">بزرگتر</td></tr>
+                    <tr><td>23</td><td><span class="code">x < y</span></td><td class="desc">کوچکتر</td></tr>
+                    <tr><td>24</td><td><span class="code">x >= y</span></td><td class="desc">بزرگتر یا مساوی</td></tr>
+                    <tr><td>25</td><td><span class="code">x <= y</span></td><td class="desc">کوچکتر یا مساوی</td></tr>
+                    <tr><td>26</td><td><span class="code">a and b</span></td><td class="desc">عملگر منطقی AND</td></tr>
+                    <tr><td>27</td><td><span class="code">a or b</span></td><td class="desc">عملگر منطقی OR</td></tr>
+                    <tr><td>28</td><td><span class="code">not a</span></td><td class="desc">عملگر منطقی NOT</td></tr>
+                    <tr><td>29</td><td><span class="code">x in [1,2,3]</span></td><td class="desc">عضویت در لیست</td></tr>
+                    <tr><td>30</td><td><span class="code">x is None</span></td><td class="desc">مقایسه هویت</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۳. لیست‌ها ===== -->
+        <div class="section-title">۳. لیست‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>31</td><td><span class="code">list = [1, 2, 3]</span></td><td class="desc">تعریف لیست</td></tr>
+                    <tr><td>32</td><td><span class="code">list.append(4)</span></td><td class="desc">اضافه کردن به انتها</td></tr>
+                    <tr><td>33</td><td><span class="code">list.insert(0, 0)</span></td><td class="desc">اضافه کردن در جای خاص</td></tr>
+                    <tr><td>34</td><td><span class="code">list.remove(2)</span></td><td class="desc">حذف مقدار</td></tr>
+                    <tr><td>35</td><td><span class="code">list.pop()</span></td><td class="desc">حذف آخرین عضو</td></tr>
+                    <tr><td>36</td><td><span class="code">list.pop(0)</span></td><td class="desc">حذف عضو در اندیس خاص</td></tr>
+                    <tr><td>37</td><td><span class="code">list[0]</span></td><td class="desc">دسترسی به عضو</td></tr>
+                    <tr><td>38</td><td><span class="code">list[-1]</span></td><td class="desc">آخرین عضو</td></tr>
+                    <tr><td>39</td><td><span class="code">list[1:3]</span></td><td class="desc">برش (Slicing)</td></tr>
+                    <tr><td>40</td><td><span class="code">len(list)</span></td><td class="desc">تعداد اعضا</td></tr>
+                    <tr><td>41</td><td><span class="code">list.sort()</span></td><td class="desc">مرتب‌سازی صعودی</td></tr>
+                    <tr><td>42</td><td><span class="code">list.reverse()</span></td><td class="desc">برعکس کردن</td></tr>
+                    <tr><td>43</td><td><span class="code">list.index(3)</span></td><td class="desc">پیدا کردن اندیس</td></tr>
+                    <tr><td>44</td><td><span class="code">3 in list</span></td><td class="desc">بررسی عضویت</td></tr>
+                    <tr><td>45</td><td><span class="code">list.clear()</span></td><td class="desc">پاک کردن کل لیست</td></tr>
+                    <tr><td>46</td><td><span class="code">list.copy()</span></td><td class="desc">کپی کردن لیست</td></tr>
+                    <tr><td>47</td><td><span class="code">list.extend([5,6])</span></td><td class="desc">اتصال دو لیست</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۴. تاپل‌ها ===== -->
+        <div class="section-title">۴. تاپل‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>48</td><td><span class="code">t = (1, 2, 3)</span></td><td class="desc">تعریف تاپل (غیرقابل تغییر)</td></tr>
+                    <tr><td>49</td><td><span class="code">t[0]</span></td><td class="desc">دسترسی به عضو</td></tr>
+                    <tr><td>50</td><td><span class="code">len(t)</span></td><td class="desc">تعداد اعضا</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۵. دیکشنری‌ها ===== -->
+        <div class="section-title">۵. دیکشنری‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>51</td><td><span class="code">d = {"name": "Ali", "age": 25}</span></td><td class="desc">تعریف دیکشنری</td></tr>
+                    <tr><td>52</td><td><span class="code">d["name"]</span></td><td class="desc">دسترسی به مقدار</td></tr>
+                    <tr><td>53</td><td><span class="code">d.get("name")</span></td><td class="desc">دسترسی ایمن</td></tr>
+                    <tr><td>54</td><td><span class="code">d["city"] = "Tehran"</span></td><td class="desc">اضافه یا ویرایش</td></tr>
+                    <tr><td>55</td><td><span class="code">del d["age"]</span></td><td class="desc">حذف کلید</td></tr>
+                    <tr><td>56</td><td><span class="code">d.pop("name")</span></td><td class="desc">حذف و برگرداندن مقدار</td></tr>
+                    <tr><td>57</td><td><span class="code">d.keys()</span></td><td class="desc">دریافت کلیدها</td></tr>
+                    <tr><td>58</td><td><span class="code">d.values()</span></td><td class="desc">دریافت مقادیر</td></tr>
+                    <tr><td>59</td><td><span class="code">d.items()</span></td><td class="desc">دریافت جفت‌کلید-مقدار</td></tr>
+                    <tr><td>60</td><td><span class="code">len(d)</span></td><td class="desc">تعداد کلیدها</td></tr>
+                    <tr><td>61</td><td><span class="code">"name" in d</span></td><td class="desc">بررسی وجود کلید</td></tr>
+                    <tr><td>62</td><td><span class="code">d.clear()</span></td><td class="desc">پاک کردن</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۶. مجموعه‌ها ===== -->
+        <div class="section-title">۶. مجموعه‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>63</td><td><span class="code">s = {1, 2, 3}</span></td><td class="desc">تعریف مجموعه</td></tr>
+                    <tr><td>64</td><td><span class="code">s.add(4)</span></td><td class="desc">اضافه کردن</td></tr>
+                    <tr><td>65</td><td><span class="code">s.remove(2)</span></td><td class="desc">حذف</td></tr>
+                    <tr><td>66</td><td><span class="code">s1.union(s2)</span></td><td class="desc">اجتماع</td></tr>
+                    <tr><td>67</td><td><span class="code">s1.intersection(s2)</span></td><td class="desc">اشتراک</td></tr>
+                    <tr><td>68</td><td><span class="code">s1.difference(s2)</span></td><td class="desc">تفاضل</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۷. رشته‌ها ===== -->
+        <div class="section-title">۷. رشته‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>69</td><td><span class="code">s = "hello"</span></td><td class="desc">تعریف رشته</td></tr>
+                    <tr><td>70</td><td><span class="code">s.upper()</span></td><td class="desc">بزرگ‌نویسی</td></tr>
+                    <tr><td>71</td><td><span class="code">s.lower()</span></td><td class="desc">کوچک‌نویسی</td></tr>
+                    <tr><td>72</td><td><span class="code">s.capitalize()</span></td><td class="desc">حرف اول بزرگ</td></tr>
+                    <tr><td>73</td><td><span class="code">s.strip()</span></td><td class="desc">حذف فاصله‌های اضافی</td></tr>
+                    <tr><td>74</td><td><span class="code">s.replace("h", "j")</span></td><td class="desc">جایگزینی</td></tr>
+                    <tr><td>75</td><td><span class="code">s.split(",")</span></td><td class="desc">تبدیل به لیست</td></tr>
+                    <tr><td>76</td><td><span class="code">",".join(["a","b"])</span></td><td class="desc">اتصال لیست به رشته</td></tr>
+                    <tr><td>77</td><td><span class="code">s.find("e")</span></td><td class="desc">پیدا کردن زیررشته</td></tr>
+                    <tr><td>78</td><td><span class="code">s.count("l")</span></td><td class="desc">تعداد تکرار</td></tr>
+                    <tr><td>79</td><td><span class="code">s.startswith("he")</span></td><td class="desc">شروع با</td></tr>
+                    <tr><td>80</td><td><span class="code">s.endswith("lo")</span></td><td class="desc">پایان با</td></tr>
+                    <tr><td>81</td><td><span class="code">s.isdigit()</span></td><td class="desc">آیا عدد است؟</td></tr>
+                    <tr><td>82</td><td><span class="code">s.isalpha()</span></td><td class="desc">آیا حرف است؟</td></tr>
+                    <tr><td>83</td><td><span class="code">s[::-1]</span></td><td class="desc">برعکس کردن رشته</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۸. شرط‌ها و حلقه‌ها ===== -->
+        <div class="section-title">۸. شرط‌ها و حلقه‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>84</td><td><span class="code">if x > 0:</span></td><td class="desc">شرط اگر</td></tr>
+                    <tr><td>85</td><td><span class="code">elif x == 0:</span></td><td class="desc">شرط در غیر این صورت اگر</td></tr>
+                    <tr><td>86</td><td><span class="code">else:</span></td><td class="desc">شرط در غیر این صورت</td></tr>
+                    <tr><td>87</td><td><span class="code">for i in range(10):</span></td><td class="desc">حلقه برای</td></tr>
+                    <tr><td>88</td><td><span class="code">for item in list:</span></td><td class="desc">پیمایش لیست</td></tr>
+                    <tr><td>89</td><td><span class="code">while x < 10:</span></td><td class="desc">حلقه تا وقتی</td></tr>
+                    <tr><td>90</td><td><span class="code">break</span></td><td class="desc">خروج از حلقه</td></tr>
+                    <tr><td>91</td><td><span class="code">continue</span></td><td class="desc">ادامه به تکرار بعدی</td></tr>
+                    <tr><td>92</td><td><span class="code">pass</span></td><td class="desc">گذر (بدون عملیات)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۹. توابع ===== -->
+        <div class="section-title">۹. توابع</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>93</td><td><span class="code">def func():</span></td><td class="desc">تعریف تابع</td></tr>
+                    <tr><td>94</td><td><span class="code">def func(x, y):</span></td><td class="desc">تابع با پارامتر</td></tr>
+                    <tr><td>95</td><td><span class="code">return x + y</span></td><td class="desc">برگرداندن مقدار</td></tr>
+                    <tr><td>96</td><td><span class="code">lambda x: x*2</span></td><td class="desc">تابع بی‌نام (Lambda)</td></tr>
+                    <tr><td>97</td><td><span class="code">*args</span></td><td class="desc">پارامترهای متغیر</td></tr>
+                    <tr><td>98</td><td><span class="code">**kwargs</span></td><td class="desc">پارامترهای نام‌دار متغیر</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ۱۰. فایل و ماژول ===== -->
+        <div class="section-title">۱۰. مدیریت فایل و ماژول‌ها</div>
+        <div class="section-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>دستور</th><th>توضیح</th></tr></thead>
+                <tbody>
+                    <tr><td>99</td><td><span class="code">import math</span></td><td class="desc">وارد کردن ماژول</td></tr>
+                    <tr><td>100</td><td><span class="code">from math import sqrt</span></td><td class="desc">وارد کردن بخشی از ماژول</td></tr>
+                    <tr><td>101</td><td><span class="code">open("file.txt", "r")</span></td><td class="desc">باز کردن فایل برای خواندن</td></tr>
+                    <tr><td>102</td><td><span class="code">open("file.txt", "w")</span></td><td class="desc">باز کردن فایل برای نوشتن</td></tr>
+                    <tr><td>103</td><td><span class="code">file.read()</span></td><td class="desc">خواندن کل فایل</td></tr>
+                    <tr><td>104</td><td><span class="code">file.readline()</span></td><td class="desc">خواندن یک خط</td></tr>
+                    <tr><td>105</td><td><span class="code">file.write("text")</span></td><td class="desc">نوشتن در فایل</td></tr>
+                    <tr><td>106</td><td><span class="code">file.close()</span></td><td class="desc">بستن فایل</td></tr>
+                    <tr><td>107</td><td><span class="code">with open(...) as f:</span></td><td class="desc">باز کردن خودکار با مدیریت خطا</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ========== لینک کانال ایتا ========== -->
+        <!-- ============================================================ -->
+        <div class="channel-link">
+            <a href="https://eitaa.com/irandigital_python" target="_blank">
+                📱 عضویت در کانال ایتا
+            </a>
+            <div class="note">🇮🇷 کانال آموزش پایتون — @irandigital_python</div>
+        </div>
+
+        <div style="text-align:center; margin-top:20px; font-size:14px; color:#8896a8; border-top:1px solid #e2e8f0; padding-top:18px;">
+            📚 مرجع سریع دستورات پایتون — تهیه شده برای برنامه‌نویسان
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ========== جاوااسکریپت ========== -->
+    <!-- ============================================================ -->
+    <script>
+        const CORRECT_PASSWORD = "m1h0r52@";
+
+        // گرفتن المنت‌ها
+        const loginContainer = document.getElementById('loginContainer');
+        const mainContent = document.getElementById('mainContent');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMsg = document.getElementById('errorMsg');
+        const loginBtn = document.getElementById('loginBtn');
+
+        // تابع بررسی رمز
+        function checkPassword() {
+            const entered = passwordInput.value.trim();
+
+            if (entered === CORRECT_PASSWORD) {
+                // مخفی کردن صفحه ورود و نمایش محتوا
+                loginContainer.style.display = 'none';
+                mainContent.classList.add('active');
+                errorMsg.textContent = '';
+                passwordInput.value = '';
+            } else {
+                errorMsg.textContent = '❌ رمز عبور اشتباه است! دوباره تلاش کنید.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // رویداد کلیک روی دکمه ورود
+        loginBtn.addEventListener('click', checkPassword);
+
+        // رویداد فشردن کلید Enter در داخل فیلد رمز
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkPassword();
+            }
+        });
+
+        // تابع خروج
+        function logout() {
+            mainContent.classList.remove('active');
+            loginContainer.style.display = 'block';
+            passwordInput.value = '';
+            errorMsg.textContent = '';
+            passwordInput.focus();
+        }
+
+        // وقتی صفحه لود شد، فوکوس روی فیلد رمز
+        window.addEventListener('load', function() {
+            passwordInput.focus();
+        });
+    </script>
+
+</body>
+</html>
